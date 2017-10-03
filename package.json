@@ -1,0 +1,20 @@
+{
+  "name": "mahjong.hakatashi.com",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hakatashi/mahjong.hakatashi.com.git"
+  },
+  "keywords": [],
+  "author": "Koki Takahashi <hakatasiloving@gmail.com> (http://hakatashi.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hakatashi/mahjong.hakatashi.com/issues"
+  },
+  "homepage": "https://github.com/hakatashi/mahjong.hakatashi.com#readme"
+}
