@@ -16,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/hakatashi/mahjong.hakatashi.com/issues"
   },
-  "homepage": "https://github.com/hakatashi/mahjong.hakatashi.com#readme"
+  "homepage": "https://github.com/hakatashi/mahjong.hakatashi.com#readme",
+  "dependencies": {
+    "array-unique": "^0.3.2",
+    "datauri": "^1.0.5",
+    "jsdom": "^11.3.0",
+    "svg2png": "^4.1.1",
+    "xmlserializer": "^0.6.0"
+  }
 }
