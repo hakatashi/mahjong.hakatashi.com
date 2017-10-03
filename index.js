@@ -7,6 +7,10 @@ hapi.connection({
 	port: parseInt(process.env.PORT) || 8080,
 });
 
+hapi.on('response', (request) => {
+	console.log(`${new Date().toISOString()}: ${request.method.toUpperCase()} ${request.url.path} --> ${request.response.statusCode}`);
+});
+
 hapi.route({
 	method: 'GET',
 	path: '/images/{pais}',
@@ -17,7 +21,7 @@ hapi.route({
 			assert(牌s.length !== 0);
 			assert(牌s.length <= 14);
 			assert(牌s.every((牌) => (
-				0x1F000 <= 牌.codePointAt(0) && 牌.codePointAt(0) <= 0x1F021
+				牌.codePointAt(0) >= 0x1F000 && 牌.codePointAt(0) <= 0x1F021
 			)));
 		} catch (error) {
 			return reply(`Bad Request: ${error.message}`).code(400);
