@@ -20,6 +20,7 @@
   "dependencies": {
     "array-unique": "^0.3.2",
     "datauri": "^1.0.5",
+    "hapi": "^16.6.2",
     "jsdom": "^11.3.0",
     "svg2png": "^4.1.1",
     "xmlserializer": "^0.6.0"
