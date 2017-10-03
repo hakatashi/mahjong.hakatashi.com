@@ -13,7 +13,7 @@ hapi.route({
 		const png = await generateImage(Array.from(request.params.pais)).catch((i) => console.log(i));
 		reply(png).type('image/png');
 	},
-})
+});
 
 hapi.start((error) => {
 	if (error) {

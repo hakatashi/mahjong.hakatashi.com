@@ -36,7 +36,7 @@ module.exports = async (牌s) => {
 
 	const 牌Images = await Promise.all(
 		[...unique牌s, 'Front'].map((牌) => (
-			datauri(`${__dirname}/riichi-mahjong-tiles/Export/Regular/${牌ToFileName(牌)}.png`).then(uri => [牌, uri])
+			datauri(`${__dirname}/riichi-mahjong-tiles/Export/Regular/${牌ToFileName(牌)}.png`).then((uri) => [牌, uri])
 		))
 	);
 
@@ -62,12 +62,12 @@ module.exports = async (牌s) => {
 		const x = (index === 13 ? index + 0.5 : index) * 牌Size + imageOffsetX;
 
 		const frontImage = paper.image(牌ImageMap.get('Front'), x, imageOffsetY, 牌Size, 牌Size / 3 * 4);
-		fixHref(frontImage.node)
+		fixHref(frontImage.node);
 
 		const offsetX = 牌Size * ((1 - printSize) / 2);
 		const offsetY = 牌Size / 3 * 4 * ((1 - printSize) / 2);
 		const image = paper.image(牌ImageMap.get(牌), x + offsetX, imageOffsetY + offsetY, 牌Size * printSize, 牌Size / 3 * 4 * printSize);
-		fixHref(image.node)
+		fixHref(image.node);
 	});
 
 	const svg = xmlserializer.serializeToString(paper.node);
