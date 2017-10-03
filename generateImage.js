@@ -6,7 +6,7 @@ const svg2png = require('svg2png');
 const fs = require('fs');
 
 const imageWidth = 900;
-const imageHeight = 250;
+const imageHeight = 150;
 const 牌Size = 60;
 const printSize = 0.85;
 
@@ -68,18 +68,6 @@ module.exports = async (牌s) => {
 		const offsetY = 牌Size / 3 * 4 * ((1 - printSize) / 2);
 		const image = paper.image(牌ImageMap.get(牌), x + offsetX, imageOffsetY + offsetY, 牌Size * printSize, 牌Size / 3 * 4 * printSize);
 		fixHref(image.node)
-
-		if (Math.random() < 0.5) {
-			image.transform(Snap.matrix().rotate(180, x + 牌Size / 2, imageOffsetY + 牌Size / 3 * 2));
-		}
-	});
-
-	const license = paper.text(imageWidth - 10, imageHeight - 10, 'Images of Mahjong Tiles by FluffyStuff licensed under CC BY 4.0');
-	license.attr({
-		textAnchor: 'end',
-		fill: '#b93c3c',
-		fontSize: '12px',
-		fontFamily: 'sans-serif',
 	});
 
 	const svg = xmlserializer.serializeToString(paper.node);
