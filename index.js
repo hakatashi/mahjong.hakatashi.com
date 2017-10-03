@@ -4,7 +4,7 @@ const generateImage = require('./generateImage.js');
 
 const hapi = new Hapi.Server();
 hapi.connection({
-	port: 8080,
+	port: parseInt(process.env.PORT) || 8080,
 });
 
 hapi.route({
