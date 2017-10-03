@@ -3,7 +3,6 @@ const {promise: datauri} = require('datauri');
 const xmlserializer = require('xmlserializer');
 const unique = require('array-unique').immutable;
 const svg2png = require('svg2png');
-const fs = require('fs');
 
 const imageWidth = 900;
 const imageHeight = 150;
@@ -43,16 +42,16 @@ module.exports = async (牌s) => {
 	const 牌ImageMap = new Map(牌Images);
 
 	const window = await new Promise((resolve, reject) => {
-		jsdom.env('', [require.resolve('snapsvg')], (error, window) => {
+		jsdom.env('', [require.resolve('snapsvg')], (error, windowObject) => {
 			if (error) {
 				reject(error);
 			} else {
-				resolve(window);
+				resolve(windowObject);
 			}
 		});
 	});
 
-	const {Snap, document} = window;
+	const {Snap} = window;
 
 	const paper = Snap(imageWidth, imageHeight);
 	const imageOffsetX = (imageWidth - 牌Size * 14.5) / 2;
