@@ -18,7 +18,7 @@ hapi.route({
 		const 牌s = Array.from(request.params.pais);
 
 		try {
-			assert(牌s.length !== 0);
+			assert.notEqual(牌s.length, 0);
 			assert(牌s.length <= 14);
 			assert(牌s.every((牌) => (
 				牌.codePointAt(0) >= 0x1F000 && 牌.codePointAt(0) <= 0x1F021

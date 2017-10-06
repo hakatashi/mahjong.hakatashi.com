@@ -1,9 +1,13 @@
 {
   "name": "mahjong.hakatashi.com",
   "version": "1.0.0",
+  "engines": {
+    "node": "^8.6.0"
+  },
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "eslint ."
   },
   "repository": {
