@@ -22,9 +22,15 @@ const fileNames = [
 	...(Array.from({length: 9}, (e, i) => `Pin${i + 1}`)),
 ];
 
-const 牌ToFileName = (牌) => (
-	fileNames[牌.codePointAt(0) - 0x1F000] || 牌
-);
+const 牌ToFileName = (牌) => {
+	const fileName = fileNames[牌.codePointAt(0) - 0x1F000] || 牌;
+
+	if (Array.from(牌)[1] === '\uFE00') {
+		return `${fileName}-Dora`;
+	}
+
+	return fileName;
+};
 
 const fixHref = (node) => {
 	node.setAttribute('xlink:href', node.getAttribute('href'));
