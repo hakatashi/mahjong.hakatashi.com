@@ -1,1 +1,1 @@
-web: ls riichi-mahjong-tiles && npm start
+web: npm start
