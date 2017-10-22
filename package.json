@@ -7,7 +7,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "git clone https://github.com/FluffyStuff/riichi-mahjong-tiles.git riichi-mahong-tiles --depth 1",
+    "postinstall": "git clone https://github.com/FluffyStuff/riichi-mahjong-tiles.git riichi-mahjong-tiles --depth 1",
     "start": "node index.js",
     "test": "eslint ."
   },
