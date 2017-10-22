@@ -1,5 +1,6 @@
 const assert = require('assert');
 const Hapi = require('hapi');
+const fs = require('fs');
 const generateImage = require('./generateImage.js');
 const {split牌s} = require('./util.js');
 
@@ -41,6 +42,11 @@ hapi.start((error) => {
 	if (error) {
 		console.error(error);
 	}
+
+	fs.readdir('riichi-mahjong-tiles', (error, files) => {
+		console.error(error);
+		console.log(files);
+	});
 
 	console.log(`Server running at: ${hapi.info.uri}`);
 });
