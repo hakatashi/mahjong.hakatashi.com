@@ -65,6 +65,7 @@ hapi.route({
 		const png = await generateImage({
 			手牌: split牌s(request.params.pais),
 			王牌,
+			王牌Status: request.query.王牌Status === 'open' ? 'open' : 'normal',
 		}).catch((i) => console.log(i));
 		return reply(png).type('image/png');
 	},

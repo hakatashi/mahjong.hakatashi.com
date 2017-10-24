@@ -35,7 +35,7 @@ const fixHref = (node) => {
 	node.setAttribute('xlink:href', node.getAttribute('href'));
 };
 
-module.exports = async ({手牌, 王牌}) => {
+module.exports = async ({手牌, 王牌, 王牌Status}) => {
 	const 王牌AreaHeight = 150;
 	const 王牌Scale = 0.6;
 	const imageWidth = 900;
@@ -43,7 +43,10 @@ module.exports = async ({手牌, 王牌}) => {
 	const 牌Size = 60;
 	const printSize = 0.85;
 
-	const unique手牌 = unique(手牌);
+	const unique手牌 = unique([
+		...手牌,
+		...(王牌 === null ? [] : 王牌),
+	]);
 
 	const 牌Images = await Promise.all(
 		[...unique手牌, 'Front', 'Back'].map(async (牌) => {
@@ -114,7 +117,7 @@ module.exports = async ({手牌, 王牌}) => {
 	if (王牌 !== null) {
 		王牌.slice(7, 14).forEach((牌, index) => {
 			const x = 600 + 牌Size * 王牌Scale * index;
-			const y = (imageHeight - 牌Size * 1.33 - 王牌AreaHeight) / 2 + 牌Size * 1.33 * 王牌Scale;
+			const y = (imageHeight - 牌Size * 1.33 - 王牌AreaHeight) / 2 + 牌Size * 1.33 * 王牌Scale + 10;
 
 			const 白牌Group = draw牌(null);
 			白牌Group.transform(`translate(${x}, ${y + 10}) scale(${王牌Scale})`);
@@ -125,7 +128,8 @@ module.exports = async ({手牌, 王牌}) => {
 
 		王牌.slice(0, 7).forEach((牌, index) => {
 			const x = 600 + 牌Size * 王牌Scale * index;
-			const y = (imageHeight - 牌Size * 1.33 - 王牌AreaHeight) / 2 + 牌Size * 1.33 * 王牌Scale * 0.7;
+			const y = (imageHeight - 牌Size * 1.33 - 王牌AreaHeight) / 2 +
+				(王牌Status === 'open' ? 0 : 牌Size * 1.33 * 王牌Scale * 0.85);
 
 			const 白牌Group = draw牌(null);
 			白牌Group.transform(`translate(${x}, ${y + 10}) scale(${王牌Scale})`);
