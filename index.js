@@ -3,6 +3,13 @@ const Hapi = require('hapi');
 const generateImage = require('./generateImage.js');
 const {split牌s} = require('./util.js');
 
+const isValid牌 = (牌) => (
+	Array.from(牌).length === 1 && (
+		(牌.codePointAt(0) >= 0x1F000 && 牌.codePointAt(0) <= 0x1F021) ||
+		牌.codePointAt(0) === 0x1F02B
+	)
+);
+
 const hapi = new Hapi.Server();
 hapi.connection({
 	port: parseInt(process.env.PORT) || 8080,
@@ -30,14 +37,15 @@ hapi.route({
 				const 牌 = Array.from(牌String)[0];
 				const variation = Array.from(牌String)[1];
 
-				return 牌.codePointAt(0) >= 0x1F000 && 牌.codePointAt(0) <= 0x1F021 &&
-				(variation === undefined || variation === '\uFE00');
+				return isValid牌(牌) && (variation === undefined || variation === '\uFE00');
 			}));
 		} catch (error) {
 			return reply(`Bad Request: ${error.message}`).code(400);
 		}
 
-		const png = await generateImage(split牌s(request.params.pais)).catch((i) => console.log(i));
+		const png = await generateImage({
+			手牌: split牌s(request.params.pais),
+		}).catch((i) => console.log(i));
 		return reply(png).type('image/png');
 	},
 });
