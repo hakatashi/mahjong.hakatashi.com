@@ -5,11 +5,6 @@ const xmlserializer = require('xmlserializer');
 const unique = require('array-unique').immutable;
 const svg2png = require('svg2png');
 
-const imageWidth = 900;
-const imageHeight = 150;
-const 手牌ize = 60;
-const printSize = 0.85;
-
 const fileNameMap = new Map([
 	...([
 		'Ton',
@@ -40,7 +35,14 @@ const fixHref = (node) => {
 	node.setAttribute('xlink:href', node.getAttribute('href'));
 };
 
-module.exports = async ({手牌}) => {
+module.exports = async ({手牌, 王牌}) => {
+	const 王牌AreaHeight = 150;
+	const 王牌Scale = 0.6;
+	const imageWidth = 900;
+	const imageHeight = 150 + (王牌 === null ? 0 : 王牌AreaHeight);
+	const 牌Size = 60;
+	const printSize = 0.85;
+
 	const unique手牌 = unique(手牌);
 
 	const 牌Images = await Promise.all(
@@ -71,32 +73,67 @@ module.exports = async ({手牌}) => {
 	const {Snap} = window;
 
 	const paper = Snap(imageWidth, imageHeight);
-	const imageOffsetX = (imageWidth - 手牌ize * 14.5) / 2;
-	const imageOffsetY = (imageHeight - 手牌ize / 3 * 4) / 2;
+	const imageOffsetX = (imageWidth - 牌Size * 14.5) / 2;
+	const imageOffsetY = (imageHeight - 牌Size / 3 * 4 + (王牌 === null ? 0 : 王牌AreaHeight)) / 2;
 
-	手牌.forEach((牌, index) => {
-		const x = (index === 13 ? index + 0.5 : index) * 手牌ize + imageOffsetX;
-
+	const draw牌 = (牌) => {
 		const frontImage = paper.image(...[
-			牌ImageMap.get(牌.codePointAt(0) === 0x1F02B ? 'Back' : 'Front'),
-			x,
-			imageOffsetY,
-			手牌ize,
-			手牌ize / 3 * 4,
+			牌ImageMap.get(牌 === '🀫' ? 'Back' : 'Front'),
+			0,
+			0,
+			牌Size,
+			牌Size / 3 * 4,
 		]);
 		fixHref(frontImage.node);
 
-		const offsetX = 手牌ize * ((1 - printSize) / 2);
-		const offsetY = 手牌ize / 3 * 4 * ((1 - printSize) / 2);
+		if (牌 === null) {
+			return paper.g(frontImage);
+		}
+
+		const offsetX = 牌Size * ((1 - printSize) / 2);
+		const offsetY = 牌Size / 3 * 4 * ((1 - printSize) / 2);
 		const image = paper.image(...[
 			牌ImageMap.get(牌),
-			x + offsetX,
-			imageOffsetY + offsetY,
-			手牌ize * printSize,
-			手牌ize / 3 * 4 * printSize,
+			offsetX,
+			offsetY,
+			牌Size * printSize,
+			牌Size / 3 * 4 * printSize,
 		]);
 		fixHref(image.node);
+
+		return paper.g(frontImage, image);
+	};
+
+	手牌.forEach((牌, index) => {
+		const x = (index === 13 ? index + 0.5 : index) * 牌Size + imageOffsetX;
+
+		const 牌Group = draw牌(牌);
+		牌Group.transform(`translate(${x}, ${imageOffsetY})`);
 	});
+
+	if (王牌 !== null) {
+		王牌.slice(7, 14).forEach((牌, index) => {
+			const x = 600 + 牌Size * 王牌Scale * index;
+			const y = (imageHeight - 牌Size * 1.33 - 王牌AreaHeight) / 2 + 牌Size * 1.33 * 王牌Scale;
+
+			const 白牌Group = draw牌(null);
+			白牌Group.transform(`translate(${x}, ${y + 10}) scale(${王牌Scale})`);
+
+			const 牌Group = draw牌(牌);
+			牌Group.transform(`translate(${x}, ${y}) scale(${王牌Scale})`);
+		});
+
+		王牌.slice(0, 7).forEach((牌, index) => {
+			const x = 600 + 牌Size * 王牌Scale * index;
+			const y = (imageHeight - 牌Size * 1.33 - 王牌AreaHeight) / 2 + 牌Size * 1.33 * 王牌Scale * 0.7;
+
+			const 白牌Group = draw牌(null);
+			白牌Group.transform(`translate(${x}, ${y + 10}) scale(${王牌Scale})`);
+
+			const 牌Group = draw牌(牌);
+			牌Group.transform(`translate(${x}, ${y}) scale(${王牌Scale})`);
+		});
+	}
 
 	const svg = xmlserializer.serializeToString(paper.node);
 	window.close();
