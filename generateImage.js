@@ -1,3 +1,4 @@
+const path = require('path');
 const jsdom = require('jsdom/lib/old-api');
 const {promise: datauri} = require('datauri');
 const xmlserializer = require('xmlserializer');
@@ -40,9 +41,16 @@ module.exports = async (牌s) => {
 	const unique牌s = unique(牌s);
 
 	const 牌Images = await Promise.all(
-		[...unique牌s, 'Front'].map((牌) => (
-			datauri(`${__dirname}/riichi-mahjong-tiles/Export/Regular/${牌ToFileName(牌)}.png`).then((uri) => [牌, uri])
-		))
+		[...unique牌s, 'Front'].map(async (牌) => {
+			const uri = await datauri(path.join(...[
+				__dirname,
+				'riichi-mahjong-tiles',
+				'Export',
+				'Regular',
+				`${牌ToFileName(牌)}.png`,
+			]));
+			return [牌, uri];
+		})
 	);
 
 	const 牌ImageMap = new Map(牌Images);

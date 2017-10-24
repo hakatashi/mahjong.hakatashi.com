@@ -9,7 +9,12 @@ hapi.connection({
 });
 
 hapi.on('response', (request) => {
-	console.log(`${new Date().toISOString()}: ${request.method.toUpperCase()} ${request.url.path} --> ${request.response.statusCode}`);
+	console.log('%s: %s %s --> %s', ...[
+		new Date().toISOString(),
+		request.method.toUpperCase(),
+		request.url.path,
+		request.response.statusCode,
+	]);
 });
 
 hapi.route({
