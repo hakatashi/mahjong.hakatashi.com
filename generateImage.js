@@ -19,6 +19,7 @@ const fileNameMap = new Map([
 		...(Array.from({length: 9}, (e, i) => `Pin${i + 1}`)),
 	].map((name, index) => [index + 0x1F000, name])),
 	[0x1F02B, 'Haku'],
+	[0x2003, 'Haku'],
 ]);
 
 const 牌ToFileName = (牌) => {
@@ -39,7 +40,7 @@ module.exports = async ({手牌, 王牌, 王牌Status}) => {
 	const 王牌AreaHeight = 150;
 	const 王牌Scale = 0.6;
 	const imageWidth = 900;
-	const imageHeight = 150 + (王牌 === null ? 0 : 王牌AreaHeight);
+	const imageHeight = 120 + (王牌 === null ? 0 : 王牌AreaHeight) - (王牌Status === 'open' ? 0 : 50);
 	const 牌Size = 60;
 	const printSize = 0.85;
 
@@ -77,9 +78,15 @@ module.exports = async ({手牌, 王牌, 王牌Status}) => {
 
 	const paper = Snap(imageWidth, imageHeight);
 	const imageOffsetX = (imageWidth - 牌Size * 14.5) / 2;
-	const imageOffsetY = (imageHeight - 牌Size / 3 * 4 + (王牌 === null ? 0 : 王牌AreaHeight)) / 2;
+	const imageOffsetY = (imageHeight - 牌Size / 3 * 4 +
+		(王牌 === null ? 0 : 王牌AreaHeight)) / 2 -
+		(王牌Status === 'open' ? 0 : 25);
 
 	const draw牌 = (牌) => {
+		if (牌 === '\u2003') {
+			return paper.g();
+		}
+
 		const frontImage = paper.image(...[
 			牌ImageMap.get(牌 === '🀫' ? 'Back' : 'Front'),
 			0,
@@ -117,10 +124,14 @@ module.exports = async ({手牌, 王牌, 王牌Status}) => {
 	if (王牌 !== null) {
 		王牌.slice(7, 14).forEach((牌, index) => {
 			const x = 600 + 牌Size * 王牌Scale * index;
-			const y = (imageHeight - 牌Size * 1.33 - 王牌AreaHeight) / 2 + 牌Size * 1.33 * 王牌Scale + 10;
+			const y = (imageHeight - 牌Size * 1.33 - 王牌AreaHeight) / 2 +
+				牌Size * 1.33 * 王牌Scale + 10 -
+				(王牌Status === 'open' ? 0 : 25);
 
-			const 白牌Group = draw牌(null);
-			白牌Group.transform(`translate(${x}, ${y + 10}) scale(${王牌Scale})`);
+			if (牌 !== '\u2003') {
+				const 白牌Group = draw牌(null);
+				白牌Group.transform(`translate(${x}, ${y + 10}) scale(${王牌Scale})`);
+			}
 
 			const 牌Group = draw牌(牌);
 			牌Group.transform(`translate(${x}, ${y}) scale(${王牌Scale})`);
@@ -129,10 +140,13 @@ module.exports = async ({手牌, 王牌, 王牌Status}) => {
 		王牌.slice(0, 7).forEach((牌, index) => {
 			const x = 600 + 牌Size * 王牌Scale * index;
 			const y = (imageHeight - 牌Size * 1.33 - 王牌AreaHeight) / 2 +
-				(王牌Status === 'open' ? 0 : 牌Size * 1.33 * 王牌Scale * 0.85);
+				(王牌Status === 'open' ? 0 : 牌Size * 1.33 * 王牌Scale * 0.9) -
+				(王牌Status === 'open' ? 0 : 25);
 
-			const 白牌Group = draw牌(null);
-			白牌Group.transform(`translate(${x}, ${y + 10}) scale(${王牌Scale})`);
+			if (牌 !== '\u2003') {
+				const 白牌Group = draw牌(null);
+				白牌Group.transform(`translate(${x}, ${y + 10}) scale(${王牌Scale})`);
+			}
 
 			const 牌Group = draw牌(牌);
 			牌Group.transform(`translate(${x}, ${y}) scale(${王牌Scale})`);

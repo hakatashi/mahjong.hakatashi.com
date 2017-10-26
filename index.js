@@ -6,7 +6,8 @@ const {split牌s} = require('./util.js');
 const isValid牌 = (牌) => (
 	Array.from(牌).length === 1 && (
 		(牌.codePointAt(0) >= 0x1F000 && 牌.codePointAt(0) <= 0x1F021) ||
-		牌.codePointAt(0) === 0x1F02B
+		牌.codePointAt(0) === 0x1F02B ||
+		牌.codePointAt(0) === 0x2003
 	)
 );
 
