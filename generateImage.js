@@ -40,7 +40,7 @@ module.exports = async ({手牌, 王牌, 王牌Status}) => {
 	const 王牌AreaHeight = 150;
 	const 王牌Scale = 0.6;
 	const imageWidth = 900;
-	const imageHeight = 120 + (王牌 === null ? 0 : 王牌AreaHeight) - (王牌Status === 'open' ? 0 : 50);
+	const imageHeight = 120 + (王牌 === null ? 0 : 王牌AreaHeight - (王牌Status === 'open' ? 0 : 50));
 	const 牌Size = 60;
 	const printSize = 0.85;
 
@@ -79,8 +79,7 @@ module.exports = async ({手牌, 王牌, 王牌Status}) => {
 	const paper = Snap(imageWidth, imageHeight);
 	const imageOffsetX = (imageWidth - 牌Size * 14.5) / 2;
 	const imageOffsetY = (imageHeight - 牌Size / 3 * 4 +
-		(王牌 === null ? 0 : 王牌AreaHeight)) / 2 -
-		(王牌Status === 'open' ? 0 : 25);
+		(王牌 === null ? 0 : 王牌AreaHeight - (王牌Status === 'open' ? 0 : 50))) / 2;
 
 	const draw牌 = (牌) => {
 		if (牌 === '\u2003') {
