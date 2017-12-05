@@ -25,7 +25,7 @@ const fileNameMap = new Map([
 const 牌ToFileName = (牌) => {
 	const fileName = fileNameMap.get(牌.codePointAt(0)) || 牌;
 
-	if (Array.from(牌)[1] === '\uFE00') {
+	if (Array.from(牌).includes('\uFE00')) {
 		return `${fileName}-Dora`;
 	}
 
@@ -47,7 +47,7 @@ module.exports = async ({手牌, 王牌, 王牌Status}) => {
 	const unique手牌 = unique([
 		...手牌,
 		...(王牌 === null ? [] : 王牌),
-	]);
+	].map((牌) => Array.from(牌).filter((char) => !char.match(/[\uFE01-\uFE04]/)).join('')));
 
 	const 牌Images = await Promise.all(
 		[...unique手牌, 'Front', 'Back'].map(async (牌) => {

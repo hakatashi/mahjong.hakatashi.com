@@ -36,9 +36,9 @@ hapi.route({
 			assert(牌s.length <= 14);
 			assert(牌s.every((牌String) => {
 				const 牌 = Array.from(牌String)[0];
-				const variation = Array.from(牌String)[1];
+				const variation = Array.from(牌String).slice(1).join('');
 
-				return isValid牌(牌) && (variation === undefined || variation === '\uFE00');
+				return isValid牌(牌) && variation.match(/^\uFE00?[\uFE01-\uFE04]?$/);
 			}));
 		} catch (error) {
 			return reply(`Bad Request: ${error.message}`).code(400);
@@ -55,18 +55,44 @@ hapi.route({
 			assert(temporary牌s.length <= 14);
 			assert(temporary牌s.every((牌String) => {
 				const 牌 = Array.from(牌String)[0];
-				const variation = Array.from(牌String)[1];
+				const variation = Array.from(牌String).slice(1).join('');
 
-				return isValid牌(牌) && (variation === undefined || variation === '\uFE00');
+				return isValid牌(牌) && variation.match(/^\uFE00?[\uFE01-\uFE04]?$/);
 			}));
 
 			return [...temporary牌s, ...new Array(14 - temporary牌s.length).fill('🀫')];
+		})();
+
+		const 副露s = (() => {
+			if (!request.query.副露) {
+				return [];
+			}
+
+			const temprary副露s = Array.isArray(request.query.副露) ? request.query.副露 : [request.query.副露];
+
+			assert(temprary副露s.length <= 4);
+
+			for (const 副露 of temprary副露s) {
+				const temporary牌s = split牌s(副露);
+
+				assert.notEqual(temporary牌s.length, 0);
+				assert(temporary牌s.length <= 4);
+				assert(temporary牌s.every((牌String) => {
+					const 牌 = Array.from(牌String)[0];
+					const variation = Array.from(牌String).slice(1).join('');
+
+					return isValid牌(牌) && variation.match(/^\uFE00?[\uFE01-\uFE04]?$/);
+				}));
+			}
+
+			return temprary副露s;
 		})();
 
 		const png = await generateImage({
 			手牌: split牌s(request.params.pais),
 			王牌,
 			王牌Status: request.query.王牌Status === 'open' ? 'open' : 'normal',
+			副露s,
 		}).catch((i) => console.log(i));
 		return reply(png).type('image/png');
 	},
