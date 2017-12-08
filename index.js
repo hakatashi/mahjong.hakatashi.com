@@ -67,6 +67,7 @@ hapi.route({
 			手牌: split牌s(request.params.pais),
 			王牌,
 			王牌Status: request.query.王牌Status === 'open' ? 'open' : 'normal',
+			color: request.query.color === 'black' ? 'black' : 'white',
 		}).catch((i) => console.log(i));
 		return reply(png).type('image/png');
 	},

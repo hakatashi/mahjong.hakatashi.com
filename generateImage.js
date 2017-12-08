@@ -36,7 +36,7 @@ const fixHref = (node) => {
 	node.setAttribute('xlink:href', node.getAttribute('href'));
 };
 
-module.exports = async ({手牌, 王牌, 王牌Status}) => {
+module.exports = async ({手牌, 王牌, 王牌Status, color}) => {
 	const 王牌AreaHeight = 150;
 	const 王牌Scale = 0.6;
 	const imageWidth = 900;
@@ -51,11 +51,11 @@ module.exports = async ({手牌, 王牌, 王牌Status}) => {
 
 	const 牌Images = await Promise.all(
 		[...unique手牌, 'Front', 'Back'].map(async (牌) => {
-			const uri = await datauri(path.join(...[
+			const uri = await datauri((color === 'black' && 牌 === '🀆') ? 'BlackHaku.png' : path.join(...[
 				__dirname,
 				'riichi-mahjong-tiles',
 				'Export',
-				'Regular',
+				color === 'white' ? 'Regular' : 'Black',
 				`${牌ToFileName(牌)}.png`,
 			]));
 			return [牌, uri];
@@ -94,6 +94,19 @@ module.exports = async ({手牌, 王牌, 王牌Status}) => {
 			牌Size / 3 * 4,
 		]);
 		fixHref(frontImage.node);
+
+		if (color === 'black' && 牌 === null) {
+			const rect = paper.rect(...[
+				0,
+				0,
+				牌Size,
+				牌Size / 3 * 4,
+				3,
+				3,
+			]);
+			rect.node.setAttribute('fill', 'rgba(0, 0, 0, 0.3)');
+			return paper.g(frontImage, rect);
+		}
 
 		if (牌 === null) {
 			return paper.g(frontImage);
