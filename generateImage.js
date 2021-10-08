@@ -1,6 +1,7 @@
+const {promises: fs} = require('fs');
 const path = require('path');
-const jsdom = require('jsdom/lib/old-api');
-const {promise: datauri} = require('datauri');
+const datauri = require('datauri');
+const {JSDOM} = require('jsdom');
 const xmlserializer = require('xmlserializer');
 const unique = require('array-unique').immutable;
 const svg2png = require('svg2png');
@@ -59,21 +60,14 @@ module.exports = async ({手牌, 王牌, 王牌Status, color}) => {
 				`${牌ToFileName(牌)}.png`,
 			]));
 			return [牌, uri];
-		})
+		}),
 	);
 
 	const 牌ImageMap = new Map(牌Images);
 
-	const window = await new Promise((resolve, reject) => {
-		jsdom.env('', [require.resolve('snapsvg')], (error, windowObject) => {
-			if (error) {
-				reject(error);
-			} else {
-				resolve(windowObject);
-			}
-		});
-	});
-
+	const {window} = new JSDOM('', {runScripts: 'dangerously'});
+	const script = await fs.readFile(require.resolve('snapsvg'));
+	window.eval(script.toString());
 	const {Snap} = window;
 
 	const paper = Snap(imageWidth, imageHeight);

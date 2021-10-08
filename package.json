@@ -23,17 +23,17 @@
   },
   "homepage": "https://github.com/hakatashi/mahjong.hakatashi.com#readme",
   "dependencies": {
+    "@hapi/hapi": "^20.2.0",
     "array-unique": "^0.3.2",
-    "datauri": "^1.0.5",
-    "eslint": "^4.8.0",
-    "hapi": "^16.6.2",
-    "jsdom": "^11.3.0",
+    "datauri": "^4.1.0",
+    "eslint": "^7.32.0",
+    "jsdom": "^18.0.0",
     "snapsvg": "^0.5.1",
     "svg2png": "^4.1.1",
-    "xmlserializer": "^0.6.0"
+    "xmlserializer": "^0.6.1"
   },
   "devDependencies": {
-    "@hakatashi/eslint-config": "^1.1.1",
-    "eslint-plugin-react": "^7.4.0"
+    "@hakatashi/eslint-config": "^1.15.0",
+    "eslint-plugin-react": "^7.26.1"
   }
 }
