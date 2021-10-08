@@ -2,12 +2,11 @@
   "name": "mahjong.hakatashi.com",
   "version": "1.0.0",
   "engines": {
-    "node": "^8.6.0"
+    "node": "^16.11.0"
   },
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "git clone https://github.com/FluffyStuff/riichi-mahjong-tiles.git riichi-mahjong-tiles --depth 1",
     "start": "node index.js",
     "test": "eslint ."
   },
