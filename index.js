@@ -34,8 +34,8 @@ hapi.route({
 		console.log(牌s);
 		assert(牌s.length <= 14);
 		assert(牌s.every((牌String) => {
-			const 牌 = Array.from(牌String)[0];
-			const variation = Array.from(牌String)[1];
+			const [牌] = Array.from(牌String);
+			const [, variation] = Array.from(牌String);
 
 			return isValid牌(牌) && (variation === undefined || variation === '\uFE00');
 		}));
@@ -50,8 +50,8 @@ hapi.route({
 			assert.notEqual(temporary牌s.length, 0);
 			assert(temporary牌s.length <= 14);
 			assert(temporary牌s.every((牌String) => {
-				const 牌 = Array.from(牌String)[0];
-				const variation = Array.from(牌String)[1];
+				const [牌] = Array.from(牌String);
+				const [, variation] = Array.from(牌String);
 
 				return isValid牌(牌) && (variation === undefined || variation === '\uFE00');
 			}));

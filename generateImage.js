@@ -1,10 +1,10 @@
 const {promises: fs} = require('fs');
 const path = require('path');
+const unique = require('array-unique').immutable;
 const datauri = require('datauri');
 const {JSDOM} = require('jsdom');
-const xmlserializer = require('xmlserializer');
-const unique = require('array-unique').immutable;
 const svg2png = require('svg2png');
+const xmlserializer = require('xmlserializer');
 
 const fileNameMap = new Map([
 	...([
@@ -15,9 +15,9 @@ const fileNameMap = new Map([
 		'Chun',
 		'Hatsu',
 		'Haku',
-		...(Array.from({length: 9}, (e, i) => `Man${i + 1}`)),
-		...(Array.from({length: 9}, (e, i) => `Sou${i + 1}`)),
-		...(Array.from({length: 9}, (e, i) => `Pin${i + 1}`)),
+		...(Array.from({length: 9}, (_, i) => `Man${i + 1}`)),
+		...(Array.from({length: 9}, (_, i) => `Sou${i + 1}`)),
+		...(Array.from({length: 9}, (_, i) => `Pin${i + 1}`)),
 	].map((name, index) => [index + 0x1F000, name])),
 	[0x1F02B, 'Haku'],
 	[0x2003, 'Haku'],
